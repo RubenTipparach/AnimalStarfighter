@@ -132,6 +132,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\CreateEnemyList.cs" />
+    <Compile Include="Assets\Editor\CreatePowerUp.cs" />
+    <Compile Include="Assets\Editor\EnemyEditor.cs" />
     <Compile Include="Assets\GoogleVR\Demos\Editor\DemoInputManagerEditor.cs" />
     <Compile Include="Assets\GoogleVR\Demos\Scripts\ScrollingUIDemo\Editor\PagedScrollbarEditor.cs" />
     <Compile Include="Assets\GoogleVR\Editor\Audio\GvrAudioListenerEditor.cs" />
