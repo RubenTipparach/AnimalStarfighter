@@ -172,6 +172,7 @@
     <Compile Include="Assets\GoogleVR\Scripts\Utilities\GvrUIHelpers.cs" />
     <Compile Include="Assets\GoogleVR\Scripts\Video\GvrVideoPlayerTexture.cs" />
     <Compile Include="Assets\Scripts\MagnetSensor.cs" />
+    <Compile Include="Assets\Scripts\Network\NetworkManagerHUD_modified.cs" />
     <Compile Include="Assets\Scripts\ShipController.cs" />
   </ItemGroup>
   <ItemGroup>
