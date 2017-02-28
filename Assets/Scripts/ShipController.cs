@@ -48,7 +48,7 @@ public class ShipController : NetworkBehaviour
         }
 	}
 
-    void Move()
+    public void Move()
     {
         if (isLocalPlayer)
         {
