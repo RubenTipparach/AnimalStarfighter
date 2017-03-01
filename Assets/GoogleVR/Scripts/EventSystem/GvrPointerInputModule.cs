@@ -21,6 +21,7 @@
 //   THE SOFTWARE.
 
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 #if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
@@ -71,8 +72,12 @@ public class GvrPointerInputModule : BaseInputModule {
   private Vector2 lastScroll;
   private bool eligibleForScroll = false;
 
-  // Active state
-  private bool isActive = false;
+	public UnityEvent triggerLong;
+
+	public UnityEvent triggerShort;
+
+	// Active state
+	private bool isActive = false;
 
   /// Time in seconds between the pointer down and up events sent by a trigger.
   /// Allows time for the UI elements to make their state transitions.
@@ -132,46 +137,57 @@ public class GvrPointerInputModule : BaseInputModule {
     return pointerData != null && pointerData.pointerEnter != null;
   }
 
-  public override void Process() {
-    if (pointer == null) {
-      Debug.LogWarning("GvrPointerInputModule requires GvrPointerManager.Pointer to be set.");
-      return;
-    }
+	public override void Process()
+	{
+		if (pointer == null)
+		{
+			Debug.LogWarning("GvrPointerInputModule requires GvrPointerManager.Pointer to be set.");
+			return;
+		}
 
-    // Save the previous Game Object
-    GameObject previousObject = GetCurrentGameObject();
+		// Save the previous Game Object
+		GameObject previousObject = GetCurrentGameObject();
 
-    CastRay();
-    UpdateCurrentObject(previousObject);
-    UpdateReticle(previousObject);
+		CastRay();
+		UpdateCurrentObject(previousObject);
+		UpdateReticle(previousObject);
 
-    // True during the frame that the trigger has been pressed.
-    bool triggerDown = Input.GetMouseButtonDown(0);
-    // True if the trigger is held down.
-    bool triggering = Input.GetMouseButton(0);
+		// True during the frame that the trigger has been pressed.
+		bool triggerDown = Input.GetMouseButtonDown(0);
+		// True if the trigger is held down.
+		bool triggering = Input.GetMouseButton(0);
 
-    #if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
+#if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
     triggerDown |= GvrController.ClickButtonDown;
     triggering |= GvrController.ClickButton;
-    #endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
+#endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR)
 
-    bool handlePendingClickRequired = !triggering;
+		bool handlePendingClickRequired = !triggering;
 
-    // Handle input
-    if (!triggerDown && triggering) {
-      HandleDrag();
-    } else if (Time.unscaledTime - pointerData.clickTime < CLICK_TIME) {
-      // Delay new events until clickTime has passed.
-    } else if (triggerDown && !pointerData.eligibleForClick) {
-      // New trigger action.
-      HandleTriggerDown();
-    } else if (handlePendingClickRequired) {
-      // Check if there is a pending click to handle.
-      HandlePendingClick();
-    }
+		// Handle input
+		if (!triggerDown && triggering)
+		{
+			triggerLong.Invoke();
+			HandleDrag();
+		}
+		else if (Time.unscaledTime - pointerData.clickTime < CLICK_TIME)
+		{
+			// Delay new events until clickTime has passed.
+		}
+		else if (triggerDown && !pointerData.eligibleForClick)
+		{
+			// New trigger action.
+			HandleTriggerDown();
+			triggerShort.Invoke();
+        }
+		else if (handlePendingClickRequired)
+		{
+			// Check if there is a pending click to handle.
+			HandlePendingClick();
+		}
 
-    HandleScroll();
-  }
+		HandleScroll();
+	}
 
   /// @endcond
 

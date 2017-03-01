@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Networking;
 
 public class ShipController : NetworkBehaviour
@@ -21,6 +22,8 @@ public class ShipController : NetworkBehaviour
 
     Transform pointer;
 
+	GvrPointerInputModule inputModule;
+
     // Use this for initialization
 	void Start ()
     {
@@ -33,6 +36,9 @@ public class ShipController : NetworkBehaviour
             GvrViewer.AddStereoControllerToCameras();
             magnetSensor.OnCardboardTrigger += Move;
             pointer = transform.GetChild(0);
+
+			inputModule = (GameObject.Find("GvrEventSystem") as GameObject).GetComponent<GvrPointerInputModule>();
+			inputModule.triggerLong.AddListener(new UnityAction(Move));
         }
     }
 	
@@ -53,6 +59,7 @@ public class ShipController : NetworkBehaviour
         if (isLocalPlayer)
         {
             transform.position += pointer.forward * Time.deltaTime;
+			// Debug.Log("Move stuff");
         }
     }
 }
