@@ -22,7 +22,9 @@ public class ShipController : NetworkBehaviour
 
     Transform pointer;
 
-	GvrPointerInputModule inputModule;
+	GvrPointerInputModule inputModule; //its a little harder without touch controls, some vr only have magnets
+
+	bool toggleMove = false;
 
     // Use this for initialization
 	void Start ()
@@ -34,8 +36,11 @@ public class ShipController : NetworkBehaviour
             magnetSensor.enabled = true;
             gaList.enabled = true;
             GvrViewer.AddStereoControllerToCameras();
-            magnetSensor.OnCardboardTrigger += Move;
-            pointer = transform.GetChild(0);
+
+			magnetSensor.OnCardboardTrigger += Move;
+			magnetSensor.OnCardboardTrigger += CmdTestServerCall;
+
+			pointer = transform.GetChild(0);
 
 			inputModule = (GameObject.Find("GvrEventSystem") as GameObject).GetComponent<GvrPointerInputModule>();
 			inputModule.triggerLong.AddListener(new UnityAction(Move));
@@ -51,15 +56,43 @@ public class ShipController : NetworkBehaviour
             {
                 Move();
             }
+
+			if(toggleMove)
+			{
+				ToggleMove();
+			}
         }
+	}
+
+	[Command]
+	void CmdTestServerCall()
+	{
+		//Debug.Log("User id " +this.netId + " called");
+	}
+
+	[Command]
+	void CmdDoFire(float lifeTime)
+	{
 	}
 
     public void Move()
     {
         if (isLocalPlayer)
         {
-            transform.position += pointer.forward * Time.deltaTime;
+			//CmdTestServerCall();
+			transform.position += pointer.forward * Time.deltaTime;
 			// Debug.Log("Move stuff");
         }
     }
+
+	/// <summary>
+	/// Maybe a double tap :)
+	/// </summary>
+	public void ToggleMove()
+	{
+		if (isLocalPlayer)
+		{
+			toggleMove = !toggleMove;
+        }
+	}
 }

@@ -11,12 +11,24 @@ namespace UnityEngine.Networking
 	public class NetworkManagerHUD_modified : MonoBehaviour
 	{
 		public NetworkManager manager;
+
 		[SerializeField]
 		public bool showGUI = true;
+
 		[SerializeField]
 		public int offsetX;
+
 		[SerializeField]
 		public int offsetY;
+
+		[SerializeField]
+		public int ySpacing = 24;
+
+		[SerializeField]
+		public int buttonHeightSize = 20;
+
+		[SerializeField]
+		public int buttonWidthSize = 100;
 
 		// Runtime variable
 		bool m_ShowServer;
@@ -64,8 +76,8 @@ namespace UnityEngine.Networking
 				return;
 
 			int xpos = 10 + offsetX;
-			int ypos = 40 + offsetY;
-			const int spacing = 24;
+			int ypos = buttonHeightSize * 2 + offsetY;
+			int spacing = ySpacing;
 
 			bool noConnection = (manager.client == null || manager.client.connection == null ||
 								 manager.client.connection.connectionId == -1);
@@ -76,19 +88,19 @@ namespace UnityEngine.Networking
 				{
 					if (UnityEngine.Application.platform != RuntimePlatform.WebGLPlayer)
 					{
-						if (GUI.Button(new Rect(xpos, ypos, 200, 20), "LAN Host(H)"))
+						if (GUI.Button(new Rect(xpos, ypos, 200, buttonHeightSize), "LAN Host(H)"))
 						{
 							manager.StartHost();
 						}
 						ypos += spacing;
 					}
 
-					if (GUI.Button(new Rect(xpos, ypos, 105, 20), "LAN Client(C)"))
+					if (GUI.Button(new Rect(xpos, ypos, 105, buttonHeightSize), "LAN Client(C)"))
 					{
 						manager.StartClient();
 					}
 
-					manager.networkAddress = GUI.TextField(new Rect(xpos + 100, ypos, 95, 20), manager.networkAddress);
+					manager.networkAddress = GUI.TextField(new Rect(xpos + 100, ypos, 95, buttonHeightSize), manager.networkAddress);
 					ypos += spacing;
 
 					if (UnityEngine.Application.platform == RuntimePlatform.WebGLPlayer)
@@ -99,7 +111,7 @@ namespace UnityEngine.Networking
 					}
 					else
 					{
-						if (GUI.Button(new Rect(xpos, ypos, 200, 20), "LAN Server Only(S)"))
+						if (GUI.Button(new Rect(xpos, ypos, 200, buttonHeightSize), "LAN Server Only(S)"))
 						{
 							manager.StartServer();
 						}
@@ -108,11 +120,11 @@ namespace UnityEngine.Networking
 				}
 				else
 				{
-					GUI.Label(new Rect(xpos, ypos, 200, 20), "Connecting to " + manager.networkAddress + ":" + manager.networkPort + "..");
+					GUI.Label(new Rect(xpos, ypos, 200, buttonHeightSize), "Connecting to " + manager.networkAddress + ":" + manager.networkPort + "..");
 					ypos += spacing;
 
 
-					if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Cancel Connection Attempt"))
+					if (GUI.Button(new Rect(xpos, ypos, 200, buttonHeightSize), "Cancel Connection Attempt"))
 					{
 						manager.StopClient();
 					}
@@ -127,19 +139,19 @@ namespace UnityEngine.Networking
 					{
 						serverMsg += " (Using WebSockets)";
 					}
-					GUI.Label(new Rect(xpos, ypos, 300, 20), serverMsg);
+					GUI.Label(new Rect(xpos, ypos, 300, buttonHeightSize), serverMsg);
 					ypos += spacing;
 				}
 				if (manager.IsClientConnected())
 				{
-					GUI.Label(new Rect(xpos, ypos, 300, 20), "Client: address=" + manager.networkAddress + " port=" + manager.networkPort);
+					GUI.Label(new Rect(xpos, ypos, 300, buttonHeightSize), "Client: address=" + manager.networkAddress + " port=" + manager.networkPort);
 					ypos += spacing;
 				}
 			}
 
 			if (manager.IsClientConnected() && !ClientScene.ready)
 			{
-				if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Client Ready"))
+				if (GUI.Button(new Rect(xpos, ypos, 200, buttonHeightSize), "Client Ready"))
 				{
 					ClientScene.Ready(manager.client.connection);
 
@@ -172,7 +184,7 @@ namespace UnityEngine.Networking
 
 				if (manager.matchMaker == null)
 				{
-					if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Enable Match Maker (M)"))
+					if (GUI.Button(new Rect(xpos, ypos, 200, buttonHeightSize), "Enable Match Maker (M)"))
 					{
 						manager.StartMatchMaker();
 					}
