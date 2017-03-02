@@ -37,13 +37,16 @@ public class ShipController : NetworkBehaviour
             gaList.enabled = true;
             GvrViewer.AddStereoControllerToCameras();
 
-			magnetSensor.OnCardboardTrigger += Move;
+			magnetSensor.OnCardboardTrigger += ToggleMove;
 			magnetSensor.OnCardboardTrigger += CmdTestServerCall;
 
 			pointer = transform.GetChild(0);
 
 			inputModule = (GameObject.Find("GvrEventSystem") as GameObject).GetComponent<GvrPointerInputModule>();
 			inputModule.triggerLong.AddListener(new UnityAction(Move));
+
+			SetFollowerManager follower = (GameObject.Find("Observer") as GameObject).GetComponent<SetFollowerManager>();
+			follower.SetFollower(transform);
         }
     }
 	
@@ -59,7 +62,7 @@ public class ShipController : NetworkBehaviour
 
 			if(toggleMove)
 			{
-				ToggleMove();
+				Move();
 			}
         }
 	}
