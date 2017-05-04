@@ -35,17 +35,19 @@ public class ShipController : NetworkBehaviour
             audioListener.enabled = true;
             magnetSensor.enabled = true;
             gaList.enabled = true;
-            GvrViewer.AddStereoControllerToCameras();
 
-			magnetSensor.OnCardboardTrigger += ToggleMove;
+#if !UNITY_HAS_GOOGLEVR || UNITY_EDITOR
+            GvrViewer.AddStereoControllerToCameras();
+#endif
+            magnetSensor.OnCardboardTrigger += ToggleMove;
 			magnetSensor.OnCardboardTrigger += CmdTestServerCall;
 
 			pointer = transform.GetChild(0);
 
 			inputModule = (GameObject.Find("GvrEventSystem") as GameObject).GetComponent<GvrPointerInputModule>();
-			inputModule.triggerLong.AddListener(new UnityAction(Move));
-
-			SetFollowerManager follower = (GameObject.Find("Observer") as GameObject).GetComponent<SetFollowerManager>();
+            //inputModule.triggerLong.AddListener(new UnityAction(Move));
+            
+            SetFollowerManager follower = (GameObject.Find("Observer") as GameObject).GetComponent<SetFollowerManager>();
 			follower.SetFollower(transform);
         }
     }
@@ -64,6 +66,8 @@ public class ShipController : NetworkBehaviour
 			{
 				Move();
 			}
+
+            
         }
 	}
 
@@ -93,8 +97,10 @@ public class ShipController : NetworkBehaviour
 	/// </summary>
 	public void ToggleMove()
 	{
-		if (isLocalPlayer)
+        Debug.Log("rip");
+        if (isLocalPlayer)
 		{
+            
 			toggleMove = !toggleMove;
         }
 	}

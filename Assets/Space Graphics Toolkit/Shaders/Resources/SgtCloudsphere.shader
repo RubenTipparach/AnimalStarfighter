@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Hidden/SgtCloudsphere"
 {
 	Properties
@@ -95,7 +97,7 @@ Shader "Hidden/SgtCloudsphere"
 				float4 wVertex = mul(unity_ObjectToWorld, i.vertex);
 				float3 wNormal = normalize(mul((float3x3)unity_ObjectToWorld, i.normal));
 
-				o.vertex = mul(UNITY_MATRIX_MVP, i.vertex);
+				o.vertex = UnityObjectToClipPos(i.vertex);
 				o.normal = i.normal;
 				o.texcoord1 = wVertex.xyz - _WorldSpaceCameraPos;
 				o.texcoord0 = dot(wNormal, normalize(-o.texcoord1));

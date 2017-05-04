@@ -1,4 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 Shader "Hidden/SgtProminence"
 {
@@ -69,7 +71,7 @@ Shader "Hidden/SgtProminence"
 				{
 					float4 vertM = mul(unity_ObjectToWorld, i.vertex);
 					
-					o.vertex    = mul(UNITY_MATRIX_MVP, i.vertex);
+					o.vertex    = UnityObjectToClipPos(i.vertex);
 					o.texcoord0 = i.texcoord0;
 					o.texcoord1 = i.texcoord1;
 #if SGT_A

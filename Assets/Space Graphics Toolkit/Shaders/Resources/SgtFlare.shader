@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "SgtFlare"
 {
 	Properties
@@ -47,7 +49,7 @@ Shader "SgtFlare"
 
 				void Vert(a2v i, out v2f o)
 				{
-					o.vertex   = mul(UNITY_MATRIX_MVP, i.vertex);
+					o.vertex   = UnityObjectToClipPos(i.vertex);
 					o.texcoord = i.texcoord;
 				}
 

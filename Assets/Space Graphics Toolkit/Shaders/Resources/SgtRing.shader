@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Hidden/SgtRing"
 {
 	Properties
@@ -114,7 +116,7 @@ Shader "Hidden/SgtRing"
 			{
 				float4 wVertex = mul(unity_ObjectToWorld, i.vertex);
 
-				o.vertex    = mul(UNITY_MATRIX_MVP, i.vertex);
+				o.vertex    = UnityObjectToClipPos(i.vertex);
 				o.texcoord0 = i.texcoord0;
 				o.texcoord1 = i.texcoord1;
 				o.texcoord2 = wVertex.xyz - _WorldSpaceCameraPos;

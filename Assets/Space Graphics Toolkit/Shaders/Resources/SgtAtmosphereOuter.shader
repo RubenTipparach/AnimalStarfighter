@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Hidden/SgtAtmosphereOuter"
 {
 	Properties
@@ -106,7 +108,7 @@ Shader "Hidden/SgtAtmosphereOuter"
 				float depth   = length(near.xyz - far.xyz);
 				float horizon = depth * _HorizonLengthRecip;
 
-				o.vertex    = mul(UNITY_MATRIX_MVP, i.vertex);
+				o.vertex    = UnityObjectToClipPos(i.vertex);
 				o.texcoord0 = horizon;
 #if LIGHT_1 || LIGHT_2
 				float3 nearD = normalize(near.xyz);

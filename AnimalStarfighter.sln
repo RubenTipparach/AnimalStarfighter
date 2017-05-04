@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalStarfighter", "AnimalStarfighter.csproj", "{CE43099B-1C5F-C0E5-2A69-C804F500EC39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalStarfighter.Editor", "AnimalStarfighter.Editor.csproj", "{163DABC2-79D6-87E5-9B09-CDEDCF35AE65}"

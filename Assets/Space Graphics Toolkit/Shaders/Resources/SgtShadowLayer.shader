@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Hidden/SgtShadowLayer"
 {
 	Properties
@@ -49,7 +51,7 @@ Shader "Hidden/SgtShadowLayer"
 
 				void Vert(a2v i, out v2f o)
 				{
-					o.vertex = mul(UNITY_MATRIX_MVP, i.vertex);
+					o.vertex = UnityObjectToClipPos(i.vertex);
 #if SHADOW_1 || SHADOW_2
 					o.texcoord0 = mul(unity_ObjectToWorld, i.vertex);
 #endif

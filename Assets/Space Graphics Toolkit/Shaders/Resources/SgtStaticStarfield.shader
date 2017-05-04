@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Hidden/SgtStaticStarfield"
 {
 	Properties
@@ -48,7 +50,7 @@ Shader "Hidden/SgtStaticStarfield"
 
 				void Vert(a2v i, out v2f o)
 				{
-					o.vertex    = mul(UNITY_MATRIX_MVP, i.vertex);
+					o.vertex    = UnityObjectToClipPos(i.vertex);
 					o.color     = i.color * _Color;
 					o.texcoord0 = i.texcoord0;
 				}

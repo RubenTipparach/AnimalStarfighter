@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Hidden/SgtJovian"
 {
 	Properties
@@ -103,7 +105,7 @@ Shader "Hidden/SgtJovian"
 #endif
 				float depth = length(near.xyz - far.xyz);
 
-				o.vertex    = mul(UNITY_MATRIX_MVP, i.vertex);
+				o.vertex    = UnityObjectToClipPos(i.vertex);
 				o.texcoord0 = depth;
 				o.texcoord5 = float3(-near.x, near.yz);
 #if LIGHT_1 || LIGHT_2

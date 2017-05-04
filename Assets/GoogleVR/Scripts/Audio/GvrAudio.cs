@@ -79,7 +79,7 @@ public static class GvrAudio {
         Debug.LogError("Only 'Stereo' speaker mode is supported by GVR Audio.");
         return;
       }
-      Initialize(quality, sampleRate, numChannels, framesPerBuffer);
+      Initialize((int) quality, sampleRate, numChannels, framesPerBuffer);
       listenerTransform = listener.transform;
 
       initialized = true;
@@ -122,11 +122,11 @@ public static class GvrAudio {
     return soundfieldId;
   }
 
-  /// Destroys the soundfield with given |id|.
+  /// Updates the |soundfield| with given |id| and its properties.
   /// @note This should only be called from the main Unity thread.
-  public static void DestroyAudioSoundfield (int id) {
+  public static void UpdateAudioSoundfield (int id, GvrAudioSoundfield soundfield) {
     if (initialized) {
-      DestroySoundfield(id);
+      SetSourceBypassRoomEffects(id, soundfield.bypassRoomEffects);
     }
   }
 
@@ -135,7 +135,7 @@ public static class GvrAudio {
   public static int CreateAudioSource (bool hrtfEnabled) {
     int sourceId = -1;
     if (initialized) {
-      sourceId = CreateSource(hrtfEnabled);
+      sourceId = CreateSoundObject(hrtfEnabled);
     }
     return sourceId;
   }
@@ -388,12 +388,9 @@ public static class GvrAudio {
   [DllImport(pluginName)]
   private static extern int CreateSoundfield (int numChannels);
 
-  [DllImport(pluginName)]
-  private static extern void DestroySoundfield (int soundfieldId);
-
   // Source handlers.
   [DllImport(pluginName)]
-  private static extern int CreateSource (bool enableHrtf);
+  private static extern int CreateSoundObject (bool enableHrtf);
 
   [DllImport(pluginName)]
   private static extern void DestroySource (int sourceId);
@@ -416,7 +413,7 @@ public static class GvrAudio {
 
   // System handlers.
   [DllImport(pluginName)]
-  private static extern void Initialize (Quality quality, int sampleRate, int numChannels,
+  private static extern void Initialize (int quality, int sampleRate, int numChannels,
                                          int framesPerBuffer);
 
   [DllImport(pluginName)]

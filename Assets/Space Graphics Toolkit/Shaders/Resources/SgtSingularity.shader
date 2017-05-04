@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 Shader "Hidden/SgtSingularity"
@@ -80,7 +82,7 @@ Shader "Hidden/SgtSingularity"
 				
 				void Vert(a2v i, out v2f o)
 				{
-					float4 vertexMVP = mul(UNITY_MATRIX_MVP, i.vertex);
+					float4 vertexMVP = UnityObjectToClipPos(i.vertex);
 					float4 centerMVP = mul(UNITY_MATRIX_VP, _Center);
 					float4 vertM     = mul(unity_ObjectToWorld, i.vertex);
 					float3 cam2vertM = _WorldSpaceCameraPos - vertM.xyz;

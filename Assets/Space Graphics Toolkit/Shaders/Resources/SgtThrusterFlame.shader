@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Hidden/SgtThrusterFlame"
 {
 	Properties
@@ -49,7 +51,7 @@ Shader "Hidden/SgtThrusterFlame"
 
 				void Vert(a2v i, out v2f o)
 				{
-					o.vertex   = mul(UNITY_MATRIX_MVP, i.vertex);
+					o.vertex   = UnityObjectToClipPos(i.vertex);
 					o.texcoord = i.texcoord;
 					o.color    = i.color * _Color;
 				}
